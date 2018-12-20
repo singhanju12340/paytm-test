@@ -22,28 +22,23 @@ t.style.display = 'block';
     <div class="login-form">
         <div class="main-div">
             <div class="panel">
-                <h2>QA Login</h2>
+                <h2>login</h2>
                 <p>Please enter your email and password</p>
             </div>
-            <form id="Login">
+            <form id="Login" action="${pageContext.request.contextPath}/signup" method="post">
              <div class="form-group">
-                                <input type="Name" class="form-control" id="Name" placeholder="Name" style="display:none;">
+                                <input type="Name" name="name" class="form-control" id="Name" placeholder="Name">
                             </div>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="inputEmail" placeholder="Email Address">
+                    <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email Address">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
                 </div>
-                <div class="forgot">
-                    <a href="#">Forgot password?</a> or  <a href="#">Signup</a>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-                or
-                <button type="submit" class="btn btn-primary" onclick=fun();>Signup</button>
+                <input type="submit" class="btn btn-primary"></input>
             </form>
         </div>
-        <p class="botto-text"> Payments QA</p>
+        <p class="botto-text"> test</p>
     </div></div></div>
 
 

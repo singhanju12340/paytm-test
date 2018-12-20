@@ -3,6 +3,7 @@ package com.paytm.qapanel.controller;
 import com.paytm.qapanel.model.UserDto;
 import com.paytm.qapanel.service.CreateUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,17 @@ public class UserServiceControler {
         createUserService.validateUser(userDto);
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String addUser(@RequestBody UserDto userDto) {
+    @RequestMapping(
+            value = "/signup",
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE
+    )
+    public String addUser(@RequestBody String request) {
+        System.out.println("signup request is: "+request);
         System.out.print("new user for signup");
-        return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
+
+        //return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
+        return null;
     }
 
 
