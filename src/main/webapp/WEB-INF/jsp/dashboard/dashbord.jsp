@@ -1,4 +1,5 @@
 <%@ page import="com.paytm.qapanel.model.*" %>
+<%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
@@ -9,7 +10,7 @@
 </head>
 <body>
 
-<form action="dashbord" method="POST">
+<form action="/dashboard" method="POST">
 <div id="page_div" name="page_div" class="page_div">
 <div id="main_header_div" name="main_header_div" class="main_header_div">
 <div id="dashbord_div" name="dashbord_div" class="dashbord_div">
@@ -48,13 +49,13 @@ Permission
   </select>
   <label for="Operation">Operation:</label>
   <select name="operation" id="operation">
-  <option value="select">SELECT</option>
-  <option value="update">UPDATE</option>
-  <option value="insert">INSERT</option>
-  <option value="alter">ALTER</option>
-  <option value="delete">DELETE</option>
-  <option value="create">CREATE</option>
-  <option value="drop">DROP</option>
+  <option value="SELECT">SELECT</option>
+  <option value="UPDATE">UPDATE</option>
+  <option value="INSERT">INSERT</option>
+  <option value="ALTER">ALTER</option>
+  <option value="DELETE">DELETE</option>
+  <option value="CREATE">CREATE</option>
+  <option value="DROP">DROP</option>
 </select>
 
 
@@ -76,10 +77,43 @@ String database = request.getParameter("database");
 String environment= request.getParameter("environment");
 String operation_type = request.getParameter("operation");
 String sql_query= request.getParameter("query_text");
-out.println(operation_type);
-out.println(sql_query);
-%>
+String sql_query_trim="",sql_query_subs="",sql_query_upper="";
+try
+{
+if(sql_query==null ){}
+else
+{
+   if(sql_query!=null)
+   {
+   sql_query_trim=sql_query.trim();
+   sql_query_subs=sql_query_trim.substring(0,6);
+   sql_query_upper=sql_query_subs.toUpperCase();
+   out.println(sql_query_upper);
 
+  if(operation_type.equals(sql_query_upper))
+  {
+    out.println("operation permitted.");
+  }
+  else
+  {
+    out.println("Operation not permitted.");
+  }
+ }
+ if(database!=null || environment!=null || operation_type!=null)
+ {
+ %>
+   <table border=1>
+   <tr><td>DATABASE</td><td>ENVIRONMENT</td><td>OPERATIONS</td><td>SQL STATEMENT</></tr>
+   <tr><td><%= database %></td><td><%= environment %></td><td><%= operation_type %></td><td><%= sql_query %></></tr>
+   </table>
+<%
+}
+}
+}
+catch(Exception e)
+{
+out.println(e);}
+%>
 </form>
 </body>
 </html>
