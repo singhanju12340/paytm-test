@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by anjukumari on 05/12/18
  */
@@ -19,8 +21,11 @@ public class UserServiceControler {
     private CreateUserService createUserService;
 
     @PostMapping(value = "/login")
-    public void login(@RequestBody UserDto userDto) {
-        createUserService.validateUser(userDto);
+    public String login(final HttpServletRequest request)
+    {
+        System.out.println("login request is: "+request.toString());
+        UserDto userDto = createUserService.UserBeanCreator(request);
+        return  createUserService.validateUser(userDto);
     }
 
     @RequestMapping(
@@ -28,12 +33,10 @@ public class UserServiceControler {
             method = RequestMethod.POST,
             consumes = MediaType.ALL_VALUE
     )
-    public String addUser(@RequestBody String request) {
-        System.out.println("signup request is: "+request);
-        System.out.print("new user for signup");
-
-        //return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
-        return null;
+    public String addUser(final HttpServletRequest request) {
+        System.out.println("signup request is: "+request.toString());
+        UserDto userDto = createUserService.UserBeanCreator(request);
+        return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
     }
 
 

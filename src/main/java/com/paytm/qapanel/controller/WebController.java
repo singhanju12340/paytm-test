@@ -14,4 +14,14 @@ public class WebController {
             return "welcome";
     }
 
+    @RequestMapping(value = "/signup")
+    public String signup() {
+        return "signUp";
+    }
+
+    @RequestMapping(value = "/login")
+    public String login() {
+        return "login";
+    }
+
 }

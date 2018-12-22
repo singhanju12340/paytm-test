@@ -7,6 +7,7 @@ import com.paytm.qapanel.dao.repo.UserRepo;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 /**
@@ -32,6 +33,7 @@ public class CreateUserService {
 
 
     public String validateUser(UserDto userDto) {
+        System.out.println(userDto.getEmail());
         User user = userRepo.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
         if(null != user && null !=user.getEmail()) {
             return user.toString();
@@ -40,12 +42,13 @@ public class CreateUserService {
         }
     }
 
-
-
-    public String testLogin()
-    {
-
-
-        return null;
+    public UserDto UserBeanCreator(HttpServletRequest request){
+        UserDto userDto = new UserDto();
+        userDto.setName(request.getParameter("name"));
+        userDto.setEmail(request.getParameter("email"));
+        userDto.setPassword(request.getParameter("password"));
+        return userDto;
     }
+
+
 }
