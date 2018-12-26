@@ -16,7 +16,7 @@ public class WebController {
         return "welcome";
     }
 
-
+    @RequestMapping(value = "/signup")
     public String signup() {
         return "signUp";
     }
@@ -30,5 +30,13 @@ public class WebController {
     public String dashbord() {
         return "/dashboard/dashbord";
     }
+
+    @RequestMapping(value = "/userstatus")
+    public String userStatus() {
+        return "/userStatus";
+    }
+
+
+
 }
 

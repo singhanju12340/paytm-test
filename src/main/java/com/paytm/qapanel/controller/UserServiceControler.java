@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Created by anjukumari on 05/12/18
@@ -21,11 +25,13 @@ public class UserServiceControler {
     private CreateUserService createUserService;
 
     @PostMapping(value = "/login")
-    public String login(final HttpServletRequest request)
+    public void login(final HttpServletRequest request, final HttpServletResponse response) throws IOException,ServletException
     {
-        System.out.println("login request is: "+request.toString());
         UserDto userDto = createUserService.UserBeanCreator(request);
-        return  createUserService.validateUser(userDto);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/userstatus");
+        dispatcher.forward(request, response);
+
+        //return  createUserService.validateUser(userDto);
     }
 
     @RequestMapping(

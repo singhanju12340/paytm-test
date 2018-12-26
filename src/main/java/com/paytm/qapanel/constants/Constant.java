@@ -27,8 +27,8 @@ public class Constant {
     public enum dbOperator{
         ALL,READ,WRITE,DELETE_UPDATE,
 
-
-
     }
+
+
 
 }

@@ -17,7 +17,7 @@
     </script>
 </head>
 <body id="LoginForm">
-<a href="/signup"> Register User</a>
+<a href="/signUp"> Register User</a>
 <br>
 <br>
 <a href="/login"> login</a>

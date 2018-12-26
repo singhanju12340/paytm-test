@@ -1,10 +1,12 @@
 package com.paytm.qapanel.service;
 
 import com.paytm.qapanel.dao.entity.User;
+import com.paytm.qapanel.dao.entity.UserPermission;
+import com.paytm.qapanel.dao.repo.PermissionRepo;
+import com.paytm.qapanel.model.Permission;
 import com.paytm.qapanel.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.paytm.qapanel.dao.repo.UserRepo;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,9 @@ import javax.transaction.Transactional;
 public class CreateUserService {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private PermissionRepo permissionRepo;
+
 
     @Transactional
     public String createUser(String email,String name, String password) {
@@ -28,12 +33,14 @@ public class CreateUserService {
         }
         user = new User(email, name, password);
         user = userRepo.save(user);
+        UserPermission userPermission = new UserPermission(user.getId(),new Permission());
+        permissionRepo.save(userPermission);
+
         return "user registered successfully";
     }
 
 
     public String validateUser(UserDto userDto) {
-        System.out.println(userDto.getEmail());
         User user = userRepo.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
         if(null != user && null !=user.getEmail()) {
             return user.toString();
