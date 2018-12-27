@@ -1,5 +1,6 @@
-<%@ page import="com.paytm.qapanel.model.*" %>
-<%@ page import="java.util.*" %>
+<%@ page import="com.paytm.qapanel.*" %>
+<%@ page import="pageNumber.*, java.util.*, java.io.*" %>
+<%@ page import ="java.sql.*"%>
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
@@ -73,13 +74,18 @@ Permission
 </div>
 
 <%
+
 String database = request.getParameter("database");
 String environment= request.getParameter("environment");
 String operation_type = request.getParameter("operation");
-String sql_query= request.getParameter("query_text");
+String sql1_query="select * from BANK_MASTER where BANK_CODE='HDFC';";
+String sql_query=request.getParameter("query_text");
 String sql_query_trim="",sql_query_subs="",sql_query_upper="";
+//ResultSet rs;
+Statement stmt;
 try
 {
+
 if(sql_query==null ){}
 else
 {
@@ -93,22 +99,32 @@ else
   if(operation_type.equals(sql_query_upper))
   {
     out.println("operation permitted.");
+     if(database!=null || environment!=null || operation_type!=null)
+     {
+     com.paytm.qapanel.dbConnection dbc=new dbConnection();
+    Statement smt=dbc.DBConnection();
+    out.println("stmt" +smt.toString());
+    ResultSet rs=smt.executeQuery(operation_type +" " + sql_query.substring(8));
+    out.println(operation_type +" " + sql_query.substring(8));
+     while(rs.next())
+     {
+     %>
+       <table border=1>
+
+       <tr><td width=70px><%= rs.getString(1) %></td><td width=150px><%= rs.getString(2) %></td><td width=150px>
+       <%= rs.getString(2) %></td><td width=150px><%= rs.getString(2) %></></tr>
+       </table>
+    <%
+    }
+    }
+    }
   }
   else
   {
     out.println("Operation not permitted.");
   }
  }
- if(database!=null || environment!=null || operation_type!=null)
- {
- %>
-   <table border=1>
-   <tr><td>DATABASE</td><td>ENVIRONMENT</td><td>OPERATIONS</td><td>SQL STATEMENT</></tr>
-   <tr><td><%= database %></td><td><%= environment %></td><td><%= operation_type %></td><td><%= sql_query %></></tr>
-   </table>
-<%
-}
-}
+
 }
 catch(Exception e)
 {
