@@ -29,7 +29,7 @@ public class UserServiceControler {
     {
         UserDto userDto = createUserService.UserBeanCreator(request);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/userstatus");
-        dispatcher.forward(request, response);
+        dispatcher.include(request, response);
 
         //return  createUserService.validateUser(userDto);
     }
