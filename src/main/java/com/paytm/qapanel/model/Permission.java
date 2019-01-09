@@ -18,6 +18,12 @@ public class Permission {
         dbPermission = "read";
     }
 
+    public Permission(ArrayList<String> environment, String panelPermission, String dbPermission) {
+        this.environment = environment;
+        this.panelPermission = panelPermission;
+        this.dbPermission = dbPermission;
+    }
+
     public ArrayList<String> getEnvironment() {
         return environment;
     }

@@ -1,5 +1,6 @@
 package com.paytm.qapanel.dao.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytm.qapanel.model.Permission;
 
 import javax.persistence.*;
@@ -22,4 +23,10 @@ public class UserPermission {
         this.userId = userId;
         this.permission = permission.toString();
     }
+
+    public String getPermission(){
+        return this.permission;
+    }
+
+
 }

@@ -45,7 +45,16 @@ public class UserServiceControler {
         return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
     }
 
-
+    @RequestMapping(
+            value = "/changePermission",
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE
+    )
+    public String changePermission(final HttpServletRequest request) {
+        System.out.println("signup request is: "+request.toString());
+        UserDto userDto = createUserService.UserBeanCreator(request);
+        return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
+    }
 
 
 }

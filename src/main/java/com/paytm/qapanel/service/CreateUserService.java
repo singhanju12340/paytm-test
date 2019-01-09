@@ -1,5 +1,6 @@
 package com.paytm.qapanel.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytm.qapanel.dao.entity.User;
 import com.paytm.qapanel.dao.entity.UserPermission;
 import com.paytm.qapanel.dao.repo.PermissionRepo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 
 /**
  * Created by anjukumari on 04/12/18
@@ -55,6 +57,20 @@ public class CreateUserService {
         userDto.setEmail(request.getParameter("email"));
         userDto.setPassword(request.getParameter("password"));
         return userDto;
+    }
+
+    public void changeUserPermission(Permission permission, String name){
+        User user = userRepo.findByName(name);
+        UserPermission userPermission = new UserPermission(user.getId(),permission);
+        permissionRepo.save(userPermission);
+    }
+
+    public Permission getUserPermission(String name){
+        User user = userRepo.findByName(name);
+        UserPermission currentPermission = permissionRepo.findByuserId(String.valueOf(user.getId()));
+        ObjectMapper mapper = new ObjectMapper();
+        Permission permission = mapper.convertValue(currentPermission.getPermission(), Permission.class);
+        return permission;
     }
 
 

@@ -33,6 +33,11 @@ public class WebController {
         return "/dashboard/dashbord";
     }
 
+    @RequestMapping(value = "/permission")
+    public String permission() {
+        return "/permission";
+    }
+
     @RequestMapping(value = "/userstatus")
     public String userStatus(HttpServletRequest request) {
         System.out.println(request.toString());

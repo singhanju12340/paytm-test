@@ -12,4 +12,7 @@
 </head>
 <body id="LoginForm">
 hello world
+
+user name: <%= request.getParameter("email") %>
+
 </body>
