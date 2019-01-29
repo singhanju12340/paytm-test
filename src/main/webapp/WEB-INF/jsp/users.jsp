@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/basic.css">
+</head>
+<body>
+<div id="page_div" name="page_div" class="page_div">
+<div id="main_header_div" name="main_header_div" class="main_header_div">
+<div id="dashbord_div" name="dashbord_div" class="dashbord_div">
+<a href="dashbord.html">Dashbord</a>
+</div>
+<div id="user_div" name="user_div" class="user_div">
+<a href="user.html">USERS</a>
+</div>
+<div id="permission_div" name="permission_div" class="permission_div">
+<a href="permission.html">
+Permission
+</a></div>
+<div id="environment_div" name="environment_div" class="environment_div">
+<a href="environment.html">Environment</a></div>
+<div id="environment_div" name="environment_div" class="environment_div">Example</div>
+</div>
+</div>
+</body>
+</html>
