@@ -9,19 +9,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <script>
-    function userStatus(){
-        http.getResponse();
-        document.getElementsById = "userStatus.jsp";
-    }
-    </script>
 </head>
 <body id="LoginForm">
-<a href="/signUp"> Register User</a>
-<br>
-<br>
-<a href="/login"> login</a>
+hello world
 
+user name: <%= request.getParameter("email") %>
 
 </body>
-</html>

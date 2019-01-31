@@ -9,8 +9,26 @@ public class Constant {
 
     public enum responseMessage{
 
-
+    }
+    public enum userPermission{
 
     }
+    public  enum userType{
+        ADMIN,
+        READ,
+        WORKER;
+    }
+
+    public enum env{
+        ALL,
+        STAGING,
+        HOTFIX;
+    }
+    public enum dbOperator{
+        ALL,READ,WRITE,DELETE_UPDATE,
+
+    }
+
+
 
 }
