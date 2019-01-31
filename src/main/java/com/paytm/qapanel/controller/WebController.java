@@ -19,9 +19,13 @@ public class WebController {
         return "welcome";
     }
 
+    //@RequestMapping(value = "/dashboard")
+    //public String dashbord() {return "/dashboard/dashbord";
+    //}
+
     @RequestMapping(value = "/dashboard")
-    public String dashbord() {
-        return "/dashboard/dashbord";
+    public String users() {
+        return "/dashboard/environment";
     }
 }
 
