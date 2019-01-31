@@ -1,6 +1,7 @@
 package com.paytm.qapanel.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytm.qapanel.model.Permission;
 import com.paytm.qapanel.model.UserDto;
 import com.paytm.qapanel.service.CreateUserService;
@@ -69,16 +70,71 @@ public class UserServiceControler {
             consumes = MediaType.ALL_VALUE
     )
     public String getPermission(final HttpServletRequest request) {
+        try {
         String name = request.getParameter("name");
-        System.out.println(name);
         Permission permission = createUserService.getUserPermission(name);
         String panel = permission.getPanelPermission();
         String db = permission.getDbPermission();
-       // env = permission.getEnvironment();
+        ObjectMapper mapper = new ObjectMapper();
 
+            String res = mapper.writeValueAsString(permission);
+            System.out.println(panel);
+            System.out.println(db);
+            //return "hello"+name;
+            return res;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        return "hello"+name;
     }
+
+    @RequestMapping(
+            value = "/getPermissionPanel",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE
+    )
+    public String getPermissionPanel(final HttpServletRequest request) {
+            String name = request.getParameter("name");
+            Permission permission = createUserService.getUserPermission(name);
+            String panel = permission.getPanelPermission();
+
+            System.out.println(panel);
+            //return "hello"+name;
+            return panel;
+    }
+
+    @RequestMapping(
+            value = "/getPermissionEnv",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE
+    )
+    public String getPermissionEnv(final HttpServletRequest request) {
+            String name = request.getParameter("name");
+            Permission permission = createUserService.getUserPermission(name);
+            String env = permission.getEnvironment().get(0);
+            //return "hello"+name;
+            return env;
+
+    }
+
+    @RequestMapping(
+            value = "/getPermissionDB",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE
+    )
+    public String getPermissionDB(final HttpServletRequest request) {
+            String name = request.getParameter("name");
+            Permission permission = createUserService.getUserPermission(name);
+            String db = permission.getDbPermission();
+            System.out.println(db);
+            //return "hello"+name;
+            return db;
+
+    }
+
+
+
 
 
 }
