@@ -18,6 +18,8 @@ public class Permission {
         dbPermission = "read";
     }
 
+
+
     public Permission(ArrayList<String> environment, String panelPermission, String dbPermission) {
         this.environment = environment;
         this.panelPermission = panelPermission;
@@ -53,7 +55,7 @@ public class Permission {
 
     @Override
     public String toString() {
-        return "{" +
+        return "Permission{" +
                 "environment=" + environment +
                 ", panelPermission='" + panelPermission + '\'' +
                 ", dbPermission='" + dbPermission + '\'' +

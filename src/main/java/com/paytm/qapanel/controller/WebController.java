@@ -23,6 +23,11 @@ public class WebController {
         return "signUp";
     }
 
+    @RequestMapping(value = "/newUserSignup")
+    public String signup1() {
+        return "signUp";
+    }
+
     @RequestMapping(value = "/login")
     public String login() {
         return "login";

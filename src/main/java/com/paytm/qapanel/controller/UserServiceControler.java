@@ -1,5 +1,7 @@
 package com.paytm.qapanel.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.paytm.qapanel.model.Permission;
 import com.paytm.qapanel.model.UserDto;
 import com.paytm.qapanel.service.CreateUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +29,16 @@ public class UserServiceControler {
     @PostMapping(value = "/login")
     public void login(final HttpServletRequest request, final HttpServletResponse response) throws IOException,ServletException
     {
+        RequestDispatcher dispatcher;
         UserDto userDto = createUserService.UserBeanCreator(request);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/userstatus");
-        dispatcher.include(request, response);
+        if(createUserService.validateUser(userDto)) {
+             dispatcher = request.getRequestDispatcher("/dashboard");
 
-        //return  createUserService.validateUser(userDto);
+        }else{
+             dispatcher = request.getRequestDispatcher("/newUserSignup");
+
+        }
+        dispatcher.include(request, response);
     }
 
     @RequestMapping(
@@ -39,7 +46,7 @@ public class UserServiceControler {
             method = RequestMethod.POST,
             consumes = MediaType.ALL_VALUE
     )
-    public String addUser(final HttpServletRequest request) {
+    public String addUser(final HttpServletRequest request) throws JsonProcessingException {
         System.out.println("signup request is: "+request.toString());
         UserDto userDto = createUserService.UserBeanCreator(request);
         return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
@@ -50,10 +57,27 @@ public class UserServiceControler {
             method = RequestMethod.POST,
             consumes = MediaType.ALL_VALUE
     )
-    public String changePermission(final HttpServletRequest request) {
+    public String changePermission(final HttpServletRequest request) throws JsonProcessingException {
         System.out.println("signup request is: "+request.toString());
         UserDto userDto = createUserService.UserBeanCreator(request);
         return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
+    }
+
+    @RequestMapping(
+            value = "/getPermission",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE
+    )
+    public String getPermission(final HttpServletRequest request) {
+        String name = request.getParameter("name");
+        System.out.println(name);
+        Permission permission = createUserService.getUserPermission(name);
+        String panel = permission.getPanelPermission();
+        String db = permission.getDbPermission();
+       // env = permission.getEnvironment();
+
+
+        return "hello"+name;
     }
 
 

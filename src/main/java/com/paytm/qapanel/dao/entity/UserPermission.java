@@ -16,12 +16,23 @@ public class UserPermission {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     @Column(name="user_id")
-    private int userId;
+    private String userId;
     private String permission;
 
-    public UserPermission( int userId, Permission permission) {
+    public UserPermission() {
+    }
+
+    public UserPermission(int id, String userId, Permission permission) {
+        this.id = id;
         this.userId = userId;
+
         this.permission = permission.toString();
+    }
+
+    public UserPermission( String userId, String permission) {
+        this.userId = userId;
+
+        this.permission = permission;
     }
 
     public String getPermission(){

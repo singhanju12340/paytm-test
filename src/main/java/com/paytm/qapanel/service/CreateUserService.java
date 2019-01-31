@@ -1,5 +1,6 @@
 package com.paytm.qapanel.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paytm.qapanel.dao.entity.User;
 import com.paytm.qapanel.dao.entity.UserPermission;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 
 @Service
 public class CreateUserService {
+
     @Autowired
     private UserRepo userRepo;
     @Autowired
@@ -27,7 +30,7 @@ public class CreateUserService {
 
 
     @Transactional
-    public String createUser(String email,String name, String password) {
+    public String createUser(String email,String name, String password) throws JsonProcessingException {
         User user = userRepo.findByEmail(email);
         System.out.println(email);
         if(null != user && null !=user.getEmail()) {
@@ -35,19 +38,22 @@ public class CreateUserService {
         }
         user = new User(email, name, password);
         user = userRepo.save(user);
-        UserPermission userPermission = new UserPermission(user.getId(),new Permission());
+        ObjectMapper mapper = new ObjectMapper();
+        String permission = mapper.writeValueAsString(new Permission());
+        UserPermission userPermission = new UserPermission(String.valueOf(user.getId()),permission);
+
         permissionRepo.save(userPermission);
 
         return "user registered successfully";
     }
 
 
-    public String validateUser(UserDto userDto) {
+    public Boolean validateUser(UserDto userDto) {
         User user = userRepo.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
         if(null != user && null !=user.getEmail()) {
-            return user.toString();
+            return true;
         }else {
-            return "user does not exist";
+            return false;
         }
     }
 
@@ -59,17 +65,22 @@ public class CreateUserService {
         return userDto;
     }
 
-    public void changeUserPermission(Permission permission, String name){
+    /*public void changeUserPermission(Permission permission, String name){
         User user = userRepo.findByName(name);
-        UserPermission userPermission = new UserPermission(user.getId(),permission);
+        UserPermission userPermission = new UserPermission(String.valueOf(user.getId()),permission);
         permissionRepo.save(userPermission);
-    }
+    }*/
 
     public Permission getUserPermission(String name){
         User user = userRepo.findByName(name);
         UserPermission currentPermission = permissionRepo.findByuserId(String.valueOf(user.getId()));
         ObjectMapper mapper = new ObjectMapper();
-        Permission permission = mapper.convertValue(currentPermission.getPermission(), Permission.class);
+        Permission permission = null;
+        try {
+            permission = mapper.readValue(currentPermission.getPermission(), Permission.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return permission;
     }
 
