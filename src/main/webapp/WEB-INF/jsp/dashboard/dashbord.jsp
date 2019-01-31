@@ -1,5 +1,6 @@
-<%@ page import="com.paytm.qapanel.model.*" %>
-<%@ page import="java.util.*" %>
+<%@ page import="com.paytm.qapanel.*" %>
+<%@ page import="pageNumber.*, java.util.*, java.io.*" %>
+<%@ page import ="java.sql.*"%>
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
@@ -31,8 +32,8 @@ Permission
 <label for="Database">Database:</label>
 <select name="database" id="database" name="database">
   <option value="select">Select</option>
-  <option value="paytmpgdb">PAYTMPGDB</option>
-  <option value="pgpdb">PGPDB</option>
+  <option value="PAYTMPGDB">PAYTMPGDB</option>
+  <option value="PGPDB">PGPDB</option>
   <option value="pgplusbo">pgplusbo</option>
 </select>
 <label for="Environment">Environment:</label>
@@ -73,13 +74,18 @@ Permission
 </div>
 
 <%
+
 String database = request.getParameter("database");
 String environment= request.getParameter("environment");
 String operation_type = request.getParameter("operation");
-String sql_query= request.getParameter("query_text");
+String sql1_query="select * from BANK_MASTER where BANK_CODE='HDFC';";
+String sql_query=request.getParameter("query_text");
 String sql_query_trim="",sql_query_subs="",sql_query_upper="";
+//ResultSet rs;
+Statement stmt;
 try
 {
+
 if(sql_query==null ){}
 else
 {
@@ -88,27 +94,57 @@ else
    sql_query_trim=sql_query.trim();
    sql_query_subs=sql_query_trim.substring(0,6);
    sql_query_upper=sql_query_subs.toUpperCase();
-   out.println(sql_query_upper);
+   //out.println(sql_query_upper);
 
   if(operation_type.equals(sql_query_upper))
   {
-    out.println("operation permitted.");
+    //out.println("operation permitted.");
+     if(database!=null || environment!=null || operation_type!=null)
+     {
+     com.paytm.qapanel.dbConnection dbc=new dbConnection();
+     Connection con=dbc.DBConnection(database, environment);
+    Statement smt=con.createStatement();
+    System.out.println("operation: "+sql_query_upper);
+    if(sql_query_upper.equals("SELECT"))
+    {
+    System.out.println("operation in rs: "+sql_query_upper);
+    ResultSet rs=smt.executeQuery(sql_query);
+    //out.println(operation_type +" " + sql_query.substring(8));
+     while(rs.next())
+     {
+     %>
+       <table border=1>
+
+       <tr><td width=70px><%= rs.getString(1) %></td><td width=150px><%= rs.getString(2) %></td><td width=150px>
+       <%= rs.getString(3) %></td><td width=150px><%= rs.getString(4) %></></tr>
+       </table>
+    <%
+    }
+    }
+    else if(operation_type.equals("INSERT") || operation_type.equals("UPDATE") || operation_type.equals("ALTER") ||operation_type.equals("DELETE") ||operation_type.equals("CREATE"))
+             {
+             System.out.println("operation in else if: "+sql_query);
+             int i=smt.executeUpdate(sql_query);
+             if (i > 0)
+             {
+                 sqlHistory sqlhistoryobj=new sqlHistory();
+                 sqlhistoryobj.user_sql_history(sql_query,sql_query_upper,environment,database);
+             } else
+             {
+              System.out.println("Opertation Unsuccessfull...!");
+             }
+
+             }
+    }
+    }
   }
   else
   {
     out.println("Operation not permitted.");
   }
  }
- if(database!=null || environment!=null || operation_type!=null)
- {
- %>
-   <table border=1>
-   <tr><td>DATABASE</td><td>ENVIRONMENT</td><td>OPERATIONS</td><td>SQL STATEMENT</></tr>
-   <tr><td><%= database %></td><td><%= environment %></td><td><%= operation_type %></td><td><%= sql_query %></></tr>
-   </table>
-<%
-}
-}
+
+
 }
 catch(Exception e)
 {
