@@ -67,26 +67,28 @@ public class UserServiceControler {
     @RequestMapping(
             value = "/getPermission",
             method = RequestMethod.GET,
-            consumes = MediaType.ALL_VALUE
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public String getPermission(final HttpServletRequest request) {
+    public Permission getPermission(final HttpServletRequest request) {
         try {
+
         String name = request.getParameter("name");
-        Permission permission = createUserService.getUserPermission(name);
-        String panel = permission.getPanelPermission();
-        String db = permission.getDbPermission();
-        ObjectMapper mapper = new ObjectMapper();
-
-            String res = mapper.writeValueAsString(permission);
-            System.out.println(panel);
-            System.out.println(db);
-            //return "hello"+name;
-            return res;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
+            System.out.print(name);
+        return createUserService.getUserPermission(name);
+//        String panel = permission.getPanelPermission();
+//        String db = permission.getDbPermission();
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//            String res = mapper.writeValueAsString(permission);
+//            System.out.println(panel);
+//            System.out.println(db);
+//            //return "hello"+name;
+//            return res;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new Permission();
         }
-
     }
 
     @RequestMapping(
