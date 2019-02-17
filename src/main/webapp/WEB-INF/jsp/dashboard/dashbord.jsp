@@ -110,16 +110,34 @@ else
     System.out.println("operation in rs: "+sql_query_upper);
     ResultSet rs=smt.executeQuery(sql_query);
     //out.println(operation_type +" " + sql_query.substring(8));
+    int colCount= rs.getMetaData().getColumnCount();
+     %>
+           <table border=1 width=100%>
+
+           <tr width=100%>
+           <%
+           ResultSetMetaData rsmd = rs.getMetaData();
+               for (int i = 1; i <=colCount; i++ ) {
+                 %>
+                 <td width=50px><%= rsmd.getColumnName(i)%></td>
+                 <%
+                 }%></tr>
+                 <%
      while(rs.next())
      {
-     %>
-       <table border=1>
+        %>
+        <tr width=100%>
+        <%
+       for(int r=1;r<=colCount;r++)
+       {
+       %>
+       <td width=50px><%= rs.getString(r) %></td>
+              <%}%>
+       </tr>
 
-       <tr><td width=70px><%= rs.getString(1) %></td><td width=150px><%= rs.getString(2) %></td><td width=150px>
-       <%= rs.getString(3) %></td><td width=150px><%= rs.getString(4) %></></tr>
-       </table>
     <%
     }
+    %></table><%
     }
     else if(operation_type.equals("INSERT") || operation_type.equals("UPDATE") || operation_type.equals("ALTER") ||operation_type.equals("DELETE") ||operation_type.equals("CREATE"))
              {
@@ -152,4 +170,10 @@ out.println(e);}
 %>
 </form>
 </body>
+
+<%
+
+%>
+
+
 </html>
