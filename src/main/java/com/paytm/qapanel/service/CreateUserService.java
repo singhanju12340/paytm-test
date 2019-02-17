@@ -9,6 +9,7 @@ import com.paytm.qapanel.model.Permission;
 import com.paytm.qapanel.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.paytm.qapanel.dao.repo.UserRepo;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

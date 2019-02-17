@@ -26,7 +26,7 @@
       */
 
       $.get("/getPermission?name=viku",function(data,status){
-
+            console.log("res => ",result);
       });
       return false;
   }
@@ -34,7 +34,9 @@
 <%@include file="header.jsp"%>
 
 
+<%-- 
 <form action="/dashboard" method="POST" onsubmit="return myFunc()">
+--%>
 <div id="list_div" name="list_div" class="list_div">
 
 <div id="text_area_div" class="text_area_div">
@@ -43,7 +45,7 @@
 </div>
 
 <div id="button_div" class="button_div">
-<input type="submit" value="Submit">
+<input type="submit" value="Submit" onsubmit="myFunc()" >
 <input type="reset" value="Clear">
 </div>
 
@@ -72,6 +74,6 @@
  </table>
 </div>
 
-</form>
+<%--</form> --%>
 </body>
 </html>

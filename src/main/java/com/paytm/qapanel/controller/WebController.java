@@ -49,6 +49,19 @@ public class WebController {
         return "/userStatus";
     }
 
+    @RequestMapping(value = "/try")
+    public String test()
+    {
+        return "/TryPermission";
+    }
+
+
+    @RequestMapping(value = "/try1")
+    public String test1()
+    {
+        return "/header";
+    }
+
 
 
 }
