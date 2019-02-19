@@ -167,3 +167,11 @@ body#LoginForm{ background-image:url("https://hdwallsource.com/img/2014/9/blur-2
 	margin-left:15%;
 	mergin-top:85%;
 }
+.center_div{
+	margin: auto;
+      width: 50%;
+      border: 3px solid green;
+          padding: 10px;
+        background-color: white;
+    align: center;
+}
