@@ -18,6 +18,7 @@ public class WebController {
         return "welcome";
     }
 
+
     @RequestMapping(value = "/signup")
     public String signup() {
         return "signUp";
@@ -33,10 +34,10 @@ public class WebController {
         return "login";
     }
 
-    @RequestMapping(value = "/dashboard")
-    public String dashbord() {
-        return "/dashboard/dashbord";
-    }
+
+    //@RequestMapping(value = "/dashboard")
+    //public String users() {
+        //return "/dashboard/environment";}
 
     @RequestMapping(value = "/permission")
     public String permission() {

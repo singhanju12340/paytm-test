@@ -37,17 +37,21 @@ Permission
   <option value="pgplusbo">pgplusbo</option>
 </select>
 <label for="Environment">Environment:</label>
-<select name="environment" id="environment">
-  <option value="select">Select</option>
-  <option value="staging">STAGING</option>
-  <option value="ite">ITE</option>
-  <option value="hotfix">HOTFIX</option>
-  <option value="qa5">QA5</option>
-  <option value="qa6">QA6</option>
-  <option value="qa7">QA7</option>
-  <option value="pos">POS</option>
-  <option value="automation">AUTOMATION</option>
-  </select>
+            <select name="environment" id="environment">
+            <option value="select">Select</option>
+<%
+try{
+updateProperty up=new updateProperty();
+Properties p = up.getProperty();
+for (final Map.Entry<Object, Object> entry : p.entrySet())
+    {
+          if(entry.getKey().toString().trim().startsWith("IP"))
+            {
+   %>
+   <option value=<%= entry.getKey().toString().substring(3) %>><%= entry.getKey().toString().substring(3) %></option>
+  <% }}}
+   catch(Exception e) {System.out.println(e);}%>
+   </select>
   <label for="Operation">Operation:</label>
   <select name="operation" id="operation">
   <option value="SELECT">SELECT</option>
@@ -57,59 +61,76 @@ Permission
   <option value="DELETE">DELETE</option>
   <option value="CREATE">CREATE</option>
   <option value="DROP">DROP</option>
+  <option value="SHOW_TABLES">Show Tables</option>
 </select>
-
-
-
 </div>
 <div id="text_area_div" class="text_area_div">
-
 <textarea rows="8" cols="100" name="query_text" id="query_text">
-
 </textarea>
 </div>
 <div id="button_div" class="button_div">
 <input type="Submit" value="Submit" onclick="Validate()">
 <input type="reset" value="Clear">
 </div>
-
 <%
-
 String database = request.getParameter("database");
 String environment= request.getParameter("environment");
 String operation_type = request.getParameter("operation");
-String sql1_query="select * from BANK_MASTER where BANK_CODE='HDFC';";
 String sql_query=request.getParameter("query_text");
 String sql_query_trim="",sql_query_subs="",sql_query_upper="";
+com.paytm.qapanel.dbConnection dbc=new dbConnection();
 //ResultSet rs;
 Statement stmt;
 try
 {
-
-if(sql_query==null ){}
+if(operation_type.equals("SHOW_TABLES"))
+    {
+    //out.println("operation type=show tables;");
+    sql_query="SHOW_TABLES";
+    sql_query_upper="SHOW_TABLES";
+    }
+if(sql_query==null){}
 else
 {
    if(sql_query!=null)
    {
+   //out.println("sql is not null "+sql_query);
    sql_query_trim=sql_query.trim();
    sql_query_subs=sql_query_trim.substring(0,6);
    sql_query_upper=sql_query_subs.toUpperCase();
-   //out.println(sql_query_upper);
 
-  if(operation_type.equals(sql_query_upper))
+  if(operation_type.equals(sql_query_upper) || operation_type.equals("SHOW_TABLES"))
   {
-    //out.println("operation permitted.");
+  //out.println(" if to check select or show ");
      if(database!=null || environment!=null || operation_type!=null)
      {
-     com.paytm.qapanel.dbConnection dbc=new dbConnection();
+
      Connection con=dbc.DBConnection(database, environment);
     Statement smt=con.createStatement();
-    System.out.println("operation: "+sql_query_upper);
+
+    if(operation_type.equals("SHOW_TABLES"))
+        {
+        //out.println(" if to check for show tables    ");
+        ResultSet rs = dbc.alltables();
+
+        %>
+        <table border=1>
+        <tr>
+        <%
+        int i=1;
+        while(rs.next()){
+        %><td><%= i%></td><td name=<%= rs.getString("TABLE_NAME")%>><%= rs.getString("TABLE_NAME")%></td></tr><%
+
+           i++; }
+
+            %></table><%
+        }
+
+
     if(sql_query_upper.equals("SELECT"))
     {
-    System.out.println("operation in rs: "+sql_query_upper);
+    //out.println("  if for select   ");
     ResultSet rs=smt.executeQuery(sql_query);
-    //out.println(operation_type +" " + sql_query.substring(8));
     int colCount= rs.getMetaData().getColumnCount();
      %>
            <table border=1 width=100%>
@@ -134,7 +155,6 @@ else
        <td width=50px><%= rs.getString(r) %></td>
               <%}%>
        </tr>
-
     <%
     }
     %></table><%
@@ -161,8 +181,6 @@ else
     out.println("Operation not permitted.");
   }
  }
-
-
 }
 catch(Exception e)
 {
