@@ -12,18 +12,7 @@
 <body>
 <script>
   function myFunc() {
-    /* var xhttp = new XMLHttpRequest();
-     xhttp.open("GET", "/getPermission?name=viku", true);
-      xhttp.onreadystatechange = function(){
-    	  console.log("repsinse===>",this.response);
-    	  var result = $.parseJSON(this.response);
-    	  console.log("res => ",result);
-           console.log("environment => ",result.environment);
-           console.log("panelPermission => ", result.panelPermission);
-           console.log("dbPermission => ",result.dbPermission);
-    	  }
-      xhttp.send();
-      */
+
 
       $.get("/getPermission?name=viku",function(data,status){
             console.log("res => ",result);

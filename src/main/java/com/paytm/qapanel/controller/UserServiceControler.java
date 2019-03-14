@@ -2,6 +2,7 @@ package com.paytm.qapanel.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paytm.qapanel.dao.entity.User;
 import com.paytm.qapanel.model.Permission;
 import com.paytm.qapanel.model.UserDto;
 import com.paytm.qapanel.service.CreateUserService;
@@ -15,9 +16,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by anjukumari on 05/12/18
@@ -31,15 +34,21 @@ public class UserServiceControler {
     public void login(final HttpServletRequest request, final HttpServletResponse response) throws IOException,ServletException
     {
         RequestDispatcher dispatcher;
-        UserDto userDto = createUserService.UserBeanCreator(request);
+        UserDto userDto          = createUserService.UserBeanCreator(request);
         if(createUserService.validateUser(userDto)) {
-             dispatcher = request.getRequestDispatcher("/dashboard");
-
+            User user = createUserService.getUserByMail(userDto);
+            Cookie loginCookie = new Cookie("user",user.getName());
+            //setting cookie to expiry in 30 mins
+            loginCookie.setMaxAge(30*60);
+            response.addCookie(loginCookie);
+            response.sendRedirect("/dashboard");
         }else{
              dispatcher = request.getRequestDispatcher("/newUserSignup");
-
+            PrintWriter out= response.getWriter();
+            out.println("<font color=red>Either user name or password is wrong.</font>");
+            dispatcher.include(request, response);
         }
-        dispatcher.include(request, response);
+
     }
 
     @RequestMapping(
@@ -47,11 +56,40 @@ public class UserServiceControler {
             method = RequestMethod.POST,
             consumes = MediaType.ALL_VALUE
     )
-    public String addUser(final HttpServletRequest request) throws JsonProcessingException {
+    public String addUser(final HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
         System.out.println("signup request is: "+request.toString());
         UserDto userDto = createUserService.UserBeanCreator(request);
         return createUserService.createUser(userDto.getEmail(), userDto.getName(),userDto.getPassword());
     }
+
+
+
+    @RequestMapping(
+            value = "/logout",
+            method = RequestMethod.POST,
+            consumes = MediaType.ALL_VALUE
+    )
+    public void logOutUser(final HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("signup request is: "+request.toString());
+        Cookie[] allCookie = request.getCookies();
+        Cookie loginCookie = null;
+        if(allCookie != null){
+            for(Cookie cookie : allCookie){
+                if(cookie.getName().equals("user")){
+                    loginCookie = cookie;
+                    break;
+                }
+            }
+            if(loginCookie != null){
+                loginCookie.setMaxAge(0);
+                response.addCookie(loginCookie);
+            }
+        }
+        response.sendRedirect("/login");
+
+    }
+
+
 
     @RequestMapping(
             value = "/changePermission",

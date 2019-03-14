@@ -57,6 +57,11 @@ public class CreateUserService {
             return false;
         }
     }
+    public User getUserByMail(UserDto userDto) {
+        User user = userRepo.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
+        return user;
+    }
+
 
     public UserDto UserBeanCreator(HttpServletRequest request){
         UserDto userDto = new UserDto();
