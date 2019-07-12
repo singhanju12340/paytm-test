@@ -6,55 +6,47 @@
 <html>
 <head>
 <link rel="stylesheet" href="css/basic.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
 <script src="js/validation.js" type="text/javascript"></script>
 </head>
 <body>
 <script>
+  function myFunc() {
 
 
-  function myFunc()
-  {
-    var userName=document.getElementById("user_name").value;
-     var xhttp = new XMLHttpRequest();
-     //output
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-         var data=this.responseText;
-         var x = document.getElementById("env");
-         var option = document.createElement("option");
-         option.text = data;
-         x.add(option);
-        x.style.display = 'block';
-      };
-      xhttp.open("GET", "/getPermissionEnv?name="+userName, true);
-      xhttp.send();
+      $.get("/getPermission?name=viku",function(data,status){
+            console.log("res => ",result);
+      });
+      return false;
   }
 </script>
 <%@include file="header.jsp"%>
 
 
-
-
-<form action="/dashboard" method="POST">
+<%-- 
+<form action="/dashboard" method="POST" onsubmit="return myFunc()">
+--%>
 <div id="list_div" name="list_div" class="list_div">
 
 <div id="text_area_div" class="text_area_div">
-<textarea rows="1" cols="10" name="user_name" id="user_name">
+<textarea rows="8" cols="100" name="query_text" id="query_text">
 </textarea>
+</div>
 
-<div id="text_submit">
-<input type="button" value="search" onclick="myFunc()">
+<div id="button_div" class="button_div">
+<input type="submit" value="Submit" onsubmit="myFunc()" >
 <input type="reset" value="Clear">
 </div>
 
+</div>
+<%--
 <%
-        CreateUserService userService = new CreateUserService();
-        Permission permission = userService.getUserPermission("viku");
-        String panel = permission.getPanelPermission();
-        String db = permission.getDbPermission();
-        String env = permission.getEnvironment().get(0);
-        System.out.println(panel);
+         PermissionImpl permissionImpl = new PermissionImpl();
+         Permission permission = permissionImpl.getPermmisionImpl("viku");
+         String panel = permission.getPanelPermission();
 %>
+--%>
+
 
 <div id="list_div" name="list_div" class="list_div">
  <table border=1>
@@ -63,14 +55,14 @@
                <td width=150px>Panel permission</td>
                <td width=150px>Database permission</td>
        </tr>
-        <tr>
-               <td width=70px><%= panel %> </td>
-               <td width=150px><%= db %></td>
-               <td width=150px><%= env %> </td>
+       <tr>
+               <td width=70px></td>
+               <td width=150px></td>
+               <td width=150px></td>
         </tr>
  </table>
 </div>
 
-</form>
+<%--</form> --%>
 </body>
 </html>

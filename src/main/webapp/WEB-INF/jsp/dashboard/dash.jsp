@@ -6,8 +6,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="css/basic.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
     <script src="js/validation.js" type="text/javascript"></script>
+
 </head>
 <body>
 
@@ -15,23 +15,19 @@
     <div id="page_div" name="page_div" class="page_div">
         <div id="main_header_div" name="main_header_div" class="main_header_div">
             <div id="dashbord_div" name="dashbord_div" class="dashbord_div">
-                <a href="/dashboard">DASHBOARD</a>
+                <a href="dashbord.html">Dashbord</a>
             </div>
             <div id="user_div" name="user_div" class="user_div">
                 <a href="users.jsp">USERS</a>
             </div>
             <div id="permission_div" name="permission_div" class="permission_div">
-                <a href="/permission">
-                    PERMISSION
+                <a href="permission.html">
+                    Permission
                 </a></div>
             <div id="environment_div" name="environment_div" class="environment_div">
-                <a href="environment">ENVIRONMENT</a></div>
-            <div id="history_div" name="history_div" class="environment_div">
-                <a href="History">HISTORY</a></div>
+                <a href="environment.html">Environment</a></div>
         </div>
         <div id="list_div" name="list_div" class="list_div">
-            <div id="drop_down" class="drop_down">
-                <div id="database_dropdown" style="margin-right: 5%;">
             <label for="Database">Database:</label>
             <select name="database" id="database" name="database">
                 <option value="select">Select</option>
@@ -39,8 +35,6 @@
                 <option value="PGPDB">PGPDB</option>
                 <option value="pgplusbo">pgplusbo</option>
             </select>
-                </div>
-                <div id="env_dropdown" style="margin-right: 5%;">
             <label for="Environment">Environment:</label>
             <select name="environment" id="environment">
                 <option value="select">Select</option>
@@ -57,8 +51,6 @@
                 <% }}}
                 catch(Exception e) {System.out.println(e);}%>
             </select>
-                </div>
-                <div id="operation_dropdown" style="margin-right: 5%;">
             <label for="Operation">Operation:</label>
             <select name="operation" id="operation">
                 <option value="SELECT">SELECT</option>
@@ -70,16 +62,14 @@
                 <option value="DROP">DROP</option>
                 <option value="SHOW_TABLES">Show Tables</option>
             </select>
-                </div>
-            </div>
         </div>
         <div id="text_area_div" class="text_area_div">
 <textarea rows="8" cols="100" name="query_text" id="query_text">
 </textarea>
         </div>
-        <div id="button_div">
-            <div><input type="Submit" value="Submit" onclick="Validate()"></div>
-            <div><input type="reset" value="Clear"></div>
+        <div id="button_div" class="button_div">
+            <input type="Submit" value="Submit" onclick="Validate()">
+            <input type="reset" value="Clear">
         </div>
             <%
 String database = request.getParameter("database");
@@ -196,12 +186,6 @@ catch(Exception e)
 out.println(e);}
 %>
 </form>
-
-
-
-<div id="result_div" name="result_div" class="result_div">
-    My result will display  hee
-</div>
 </body>
 
 <%

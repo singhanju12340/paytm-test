@@ -1,13 +1,19 @@
 package com.paytm.qapanel.dao.entity;
 
+import net.bytebuddy.implementation.bytecode.constant.DefaultValue;
+
 import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * Created by anjukumari on 18/01/19
  */
 
 @Entity
-@Table(name = "history")
+@Table(name = "user_sql_history")
 public class History {
 
     @Id
@@ -15,7 +21,35 @@ public class History {
     int id;
     int user_id;
     String command;
+    String env;
+    String database;
+    @Column(columnDefinition="default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
 
+    Time date;
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public Time getDate() {
+        return date;
+    }
+
+    public void setDate(Time date) {
+        this.date = date;
+    }
 
     public int getId() {
         return id;

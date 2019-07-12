@@ -9,6 +9,7 @@ import com.paytm.qapanel.model.Permission;
 import com.paytm.qapanel.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.paytm.qapanel.dao.repo.UserRepo;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +57,11 @@ public class CreateUserService {
             return false;
         }
     }
+    public User getUserByMail(UserDto userDto) {
+        User user = userRepo.findByEmailAndPassword(userDto.getEmail(), userDto.getPassword());
+        return user;
+    }
+
 
     public UserDto UserBeanCreator(HttpServletRequest request){
         UserDto userDto = new UserDto();

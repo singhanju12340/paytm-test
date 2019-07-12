@@ -1,13 +1,14 @@
 package com.paytm.qapanel.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anjukumari on 24/12/18
  */
 public class Permission {
 
-    private ArrayList<String> environment;
+    private List<String> environment;
     private String panelPermission;
     private String dbPermission;
 
@@ -20,17 +21,17 @@ public class Permission {
 
 
 
-    public Permission(ArrayList<String> environment, String panelPermission, String dbPermission) {
+    public Permission(List<String> environment, String panelPermission, String dbPermission) {
         this.environment = environment;
         this.panelPermission = panelPermission;
         this.dbPermission = dbPermission;
     }
 
-    public ArrayList<String> getEnvironment() {
+    public List<String> getEnvironment() {
         return environment;
     }
 
-    public Permission setEnvironment(ArrayList<String> environment) {
+    public Permission setEnvironment(List<String> environment) {
         this.environment = environment;
         return this;
     }

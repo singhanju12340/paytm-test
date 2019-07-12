@@ -53,7 +53,7 @@ Permission
 
 </tr>
 <%
-updateProperty up=new updateProperty();
+UpdateProperty up=new UpdateProperty();
 
 Properties p = up.getProperty();
 Set<Entry<Object, Object>>  entrySet1 = p.entrySet();

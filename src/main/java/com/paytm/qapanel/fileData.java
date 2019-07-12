@@ -1,13 +1,11 @@
 package com.paytm.qapanel;
-import ch.qos.logback.core.net.SyslogOutputStream;
-import lombok.val;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
-import java.sql.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.io.*;
+import javax.naming.ConfigurationException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 public class fileData
 {
@@ -25,7 +23,7 @@ public class fileData
 
        }
        System.out.println("Map here is " + value_from_file);
-      //return value_from_file;
    }
+
 
 }
